@@ -5,6 +5,7 @@ import speech_recognition as sr
 from helpers.twitter import post_tweet
 
 recognizer = sr.Recognizer()
+last_radio_url = ""
 
 # Fetch the latest team radio data
 res = requests.get("https://api.openf1.org/v1/team_radio?session_key=latest")
@@ -14,7 +15,7 @@ data = res.json()
 last_radio = data[-1] if data else None
 
 # Check if there is a valid last radio transmission
-if last_radio:
+if last_radio and last_radio_url != last_radio.get("recording_url"):
     driver_number = last_radio.get("driver_number")
 
     # Fetch driver information using driver_number
@@ -59,6 +60,8 @@ if last_radio:
         if os.path.exists(wav_filename):
             os.remove(wav_filename)
 
+        last_radio_url = last_radio.get("recording_url")
+    
     else:
         print("No recordings found.")
 
