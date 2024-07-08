@@ -69,6 +69,8 @@ try:
                         os.remove(mp3_filename)
                     if os.path.exists(wav_filename):
                         os.remove(wav_filename)
+                    
+                    last_radio_url = last_radio.get("recording_url")
 
             else:
                 print("No recordings found.")
